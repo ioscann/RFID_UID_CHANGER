@@ -89,9 +89,20 @@ namespace RFID_UID_CHANGER
 
         private void exitBtn_Click(object sender, EventArgs e)
         {
-            DialogResult = MessageBox.Show("Çıkmak istiyor musun ?", "Uyarı", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            bool language = uidChange.language;
 
-            if (DialogResult == DialogResult.Yes) { Application.Exit(); }
+            if (language == false)
+            {
+                DialogResult = MessageBox.Show("Çıkmak istiyor musun ?", "Uyarı", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (DialogResult == DialogResult.Yes) { Application.Exit(); }
+            }
+            else
+            {
+                DialogResult = MessageBox.Show("Do you want to go out ?", "Uyarı", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (DialogResult == DialogResult.Yes) { Application.Exit(); }
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
