@@ -27,7 +27,7 @@ namespace RFID_UID_CHANGER.Forms
         private string cardUID;
         public static bool language = false;
 
-        void endConnection()
+        void endConnection() //edfhdfhd
         {
             serialPort1.Close();
             btnDisconnect.Enabled = false;
