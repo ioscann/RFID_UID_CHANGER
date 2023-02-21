@@ -34,7 +34,6 @@ namespace RFID_UID_CHANGER.Forms
             btnConnect.Enabled = true;
             if (language == true) { lblConnectStatus.Text = "Not Connected"; } else { lblConnectStatus.Text = "BAĞLI DEĞİL"; }
             lblConnectStatus.ForeColor = Color.Red;
-            btnCodeUploader.Enabled = false;
             groupBox2.Enabled = false;
             groupBox3.Enabled= false;
             cmbSerialPorts.Enabled = true;
@@ -100,7 +99,6 @@ namespace RFID_UID_CHANGER.Forms
         {
             timer2.Start();
             btnDisconnect.Enabled = false;
-            btnCodeUploader.Enabled = false;
             if (language == true) { makeEnglish(); }
         }
 
@@ -112,7 +110,6 @@ namespace RFID_UID_CHANGER.Forms
                 cmbSerialPorts.Enabled = true;
                 btnConnect.Enabled = true;
                 btnDisconnect.Enabled = false;
-                btnCodeUploader.Enabled = true;
                 if (language == true) { lblConnectStatus.Text = "Not Connected"; } else { lblConnectStatus.Text = "BAĞLI DEĞİL"; }
                 lblConnectStatus.ForeColor = Color.Red;
                 groupBox2.Enabled = false;
@@ -134,7 +131,6 @@ namespace RFID_UID_CHANGER.Forms
                     cmbSerialPorts.Enabled = false;
                     if (language == true) { lblConnectStatus.Text = "Connected"; } else { lblConnectStatus.Text = "BAĞLI"; }
                     lblConnectStatus.ForeColor = Color.Lime;
-                    btnCodeUploader.Enabled = true;
                 }
                 catch 
                 {
