@@ -37,6 +37,7 @@ namespace RFID_UID_CHANGER.Forms
             btnCodeUploader.Enabled = false;
             groupBox2.Enabled = false;
             groupBox3.Enabled= false;
+            cmbSerialPorts.Enabled = true;
         }
 
         void clearReadTextbox()
@@ -157,7 +158,7 @@ namespace RFID_UID_CHANGER.Forms
                 serialPort1.Close();
                 try 
                 { 
-                    uploader.UploadSketch(); 
+                    uploader.UploadSketch();
                     serialPort1.Open();
                     groupBox2.Enabled = true;
                     groupBox3.Enabled = true;
@@ -195,12 +196,13 @@ namespace RFID_UID_CHANGER.Forms
         {
             string[] ports = SerialPort.GetPortNames();
             cmbSerialPorts.DataSource = ports;
+            if (serialPort1.IsOpen == true) { btnCodeUploader.Enabled = true; } else { btnCodeUploader.Enabled = false; }
             if (language == true) { makeEnglish(); } else { makeTurkish(); }
             if (language == true && serialPort1.IsOpen == true) { lblConnectStatus.Text = "Connected"; }
             else if (language == true && serialPort1.IsOpen == false) { lblConnectStatus.Text = "Not Connected"; }
             else if (language == false && serialPort1.IsOpen == true) { lblConnectStatus.Text = "BAĞLI"; }
             else if (language == false && serialPort1.IsOpen == false) { lblConnectStatus.Text = "BAĞLI DEĞİL"; }
-            if (cmbSerialPorts.Text == "") { endConnection(); btnCodeUploader.Enabled = true; cmbSerialPorts.Enabled = true; }
+            if (cmbSerialPorts.Text == "") { endConnection(); }
             if (language == true && radioButton4.Checked == true) { WTxtBlock4.Text = "Access Bit!"; } 
             else if (language == false && radioButton4.Checked == true) { WTxtBlock4.Text = "Doğrulama Bit'i !"; }
         }
@@ -289,36 +291,103 @@ namespace RFID_UID_CHANGER.Forms
         {
             if (comboBox1.Text != "" && serialPort1.IsOpen == true)
             {
-                if (radioButton1.Checked == true && WTxtBlock1.Text != "" && Wblock1.Text != "") { serialPort1.Write("2"); System.Threading.Thread.Sleep(2000); serialPort1.Write(Wblock1.Text); System.Threading.Thread.Sleep(2000); serialPort1.Write(WTxtBlock1.Text); System.Threading.Thread.Sleep(3000); }
-                else if (radioButton2.Checked == true && WTxtBlock2.Text != "" && Wblock2.Text != "") { serialPort1.Write("2"); System.Threading.Thread.Sleep(2000); serialPort1.Write(Wblock2.Text); System.Threading.Thread.Sleep(2000); serialPort1.Write(WTxtBlock2.Text); System.Threading.Thread.Sleep(3000); }
-                else if (radioButton3.Checked == true && WTxtBlock3.Text != "" && Wblock3.Text != "") { serialPort1.Write("2"); System.Threading.Thread.Sleep(2000); serialPort1.Write(Wblock3.Text); System.Threading.Thread.Sleep(2000); serialPort1.Write(WTxtBlock3.Text); System.Threading.Thread.Sleep(3000); }
-                else if (radioButton4.Checked == true && WTxtBlock4.Text != "" && Wblock3.Text != "") { if (language == false) { MessageBox.Show("Doğrulama biti. Buraya veri yazamazsınız !", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
-                    else { MessageBox.Show("Access bit. You cannot write data here !", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); } }
+                if (radioButton1.Checked == true && WTxtBlock1.Text != "" && Wblock1.Text != "") 
+                {
+                    serialPort1.Write("2"); 
+                    System.Threading.Thread.Sleep(2000);
+                    serialPort1.Write(Wblock1.Text);
+                    System.Threading.Thread.Sleep(2000);
+                    serialPort1.Write(WTxtBlock1.Text);
+                    System.Threading.Thread.Sleep(3000);
+                }
+                else if (radioButton2.Checked == true && WTxtBlock2.Text != "" && Wblock2.Text != "")
+                {
+                    serialPort1.Write("2");
+                    System.Threading.Thread.Sleep(2000);
+                    serialPort1.Write(Wblock2.Text);
+                    System.Threading.Thread.Sleep(2000);
+                    serialPort1.Write(WTxtBlock2.Text);
+                    System.Threading.Thread.Sleep(3000);
+                }
+                else if (radioButton3.Checked == true && WTxtBlock3.Text != "" && Wblock3.Text != "")
+                { 
+                    serialPort1.Write("2");
+                    System.Threading.Thread.Sleep(2000);
+                    serialPort1.Write(Wblock3.Text);
+                    System.Threading.Thread.Sleep(2000);
+                    serialPort1.Write(WTxtBlock3.Text);
+                    System.Threading.Thread.Sleep(3000);
+                }
+                else if (radioButton4.Checked == true && WTxtBlock4.Text != "" && Wblock3.Text != "") 
+                {
+                    if (language == false) { MessageBox.Show("Doğrulama biti. Buraya veri yazamazsınız !", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
 
-                else { if (language == false) { MessageBox.Show("Önce bir blok seçmeniz gerekiyor ! (NOT : 0,1,2 SEKTÖRLERİNDE İLK İKİ BLOĞA VERİ YAZILAMAZ)", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); } 
-                    else { MessageBox.Show("A block needs to be made first! (NOTE: DATA CANNOT BE WRITTEN IN THE FIRST TWO BLOCKS IN SECTORS 0,1,2)", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); } }
+                    else { MessageBox.Show("Access bit. You cannot write data here !", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+                }
+                else 
+                {
+                    if (language == false) { MessageBox.Show("Önce bir blok seçmeniz gerekiyor ! (NOT : 0,1,2 SEKTÖRLERİNDE İLK İKİ BLOĞA VERİ YAZILAMAZ)", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+                    
+                    else { MessageBox.Show("A block needs to be made first! (NOTE: DATA CANNOT BE WRITTEN IN THE FIRST TWO BLOCKS IN SECTORS 0,1,2)", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+                }
                 
             }
-            else { if (language == false) { MessageBox.Show("Önce bir sektör seçip içini doldurmanız gerekir ! ", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
-                   else { MessageBox.Show("First you need to select a sector and fill it in ! ", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
-            }         
+            else 
+            { 
+                if (language == false) { MessageBox.Show("Önce bir sektör seçip içini doldurmanız gerekir ! ", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+
+                else { MessageBox.Show("First you need to select a sector and fill it in ! ", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); } 
+            }
+                     
         }
 
         private void btnReadSector_Click(object sender, EventArgs e)
         {
             if (comboBox2.Text != "" &&  serialPort1.IsOpen == true) 
             {
-                if (radioButton5.Checked == true) { serialPort1.Write("3"); serialPort1.Write(Rblock1.Text); System.Threading.Thread.Sleep(500); RTxtBlock1.Text = serialPort1.ReadExisting(); }
-                else if (radioButton6.Checked == true) { serialPort1.Write("3"); serialPort1.Write(Rblock2.Text); System.Threading.Thread.Sleep(500); RTxtBlock2.Text = serialPort1.ReadExisting(); }
-                else if (radioButton7.Checked == true) { serialPort1.Write("3"); serialPort1.Write(Rblock3.Text); System.Threading.Thread.Sleep(500); RTxtBlock3.Text = serialPort1.ReadExisting(); }
-                else if (radioButton8.Checked == true) { serialPort1.Write("3"); serialPort1.Write(Rblock4.Text); System.Threading.Thread.Sleep(500); RTxtBlock4.Text = serialPort1.ReadExisting(); }
-                else { if (language == false) { MessageBox.Show("Önce okumak istediğin bloğu seçmelisin!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
-                       else { MessageBox.Show("First you need the select the block you want!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+                if (radioButton5.Checked == true) 
+                { 
+                    serialPort1.Write("3");
+                    serialPort1.Write(Rblock1.Text);
+                    System.Threading.Thread.Sleep(500);
+                    RTxtBlock1.Text = serialPort1.ReadExisting();
+                }
+                else if (radioButton6.Checked == true)
+                { 
+                    serialPort1.Write("3");
+                    serialPort1.Write(Rblock2.Text);
+                    System.Threading.Thread.Sleep(500);
+                    RTxtBlock2.Text = serialPort1.ReadExisting();
+                }
+                else if (radioButton7.Checked == true)
+                { 
+                    serialPort1.Write("3");
+                    serialPort1.Write(Rblock3.Text);
+                    System.Threading.Thread.Sleep(500);
+                    RTxtBlock3.Text = serialPort1.ReadExisting();
+                }
+                else if (radioButton8.Checked == true) 
+                { 
+                    serialPort1.Write("3");
+                    serialPort1.Write(Rblock4.Text);
+                    System.Threading.Thread.Sleep(500);
+                    RTxtBlock4.Text = serialPort1.ReadExisting();
+                }
+                else 
+                { 
+                    if (language == false) { MessageBox.Show("Önce okumak istediğin bloğu seçmelisin!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+
+                    else { MessageBox.Show("First you need the select the block you want!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
                 }
                 
+                
             }
-            else { if (language == false) { MessageBox.Show("Okumadan önce sektör ve blok seçmelisin !", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
-                   else { MessageBox.Show("You must select sector and block before reading !", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); } }
+            else 
+            { 
+                if (language == false) { MessageBox.Show("Okumadan önce sektör ve blok seçmelisin !", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+
+                else { MessageBox.Show("You must select sector and block before reading !", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); } 
+            }
                         
         }
 

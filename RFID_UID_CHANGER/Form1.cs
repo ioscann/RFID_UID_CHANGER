@@ -23,7 +23,9 @@ namespace RFID_UID_CHANGER
 
         private int mouseX, mouseY;
 
-        private string[] formList = { "schema", "uidChange"};
+        uidChange uidForm = new uidChange();
+
+        schema schemaForm = new schema();
 
         private void drag(bool Event)
         {
@@ -36,39 +38,27 @@ namespace RFID_UID_CHANGER
             else { timer1.Stop(); }
         }
 
-        void checkForms()
-        {
-            for (int i = 0; i < formList.Length; i++)
-            {
-                Form f = Application.OpenForms[formList[i]];
-
-                if (f != null) { f.Close(); }
-            }
-        }
-
         void openForm(string form)
         {
             if (form == "uidchange")
             {
                 mdi_Panel.Controls.Clear();
-                Forms.uidChange frm = new Forms.uidChange();
-                frm.TopLevel = false;
-                mdi_Panel.Controls.Add(frm);
+                uidForm.TopLevel = false;
+                mdi_Panel.Controls.Add(uidForm);
 
-                frm.Show();
-                frm.Dock = DockStyle.Fill;
-                frm.BringToFront();
+                uidForm.Show();
+                uidForm.Dock = DockStyle.Fill;
+                uidForm.BringToFront();
             }
             else if (form == "schema")
             {
                 mdi_Panel.Controls.Clear();
-                Forms.schema frm = new Forms.schema();
-                frm.TopLevel = false;
-                mdi_Panel.Controls.Add(frm);
+                schemaForm.TopLevel = false;
+                mdi_Panel.Controls.Add(schemaForm);
 
-                frm.Show();
-                frm.Dock = DockStyle.Fill;
-                frm.BringToFront();
+                schemaForm.Show();
+                uidForm.Dock = DockStyle.Fill;
+                uidForm.BringToFront();
             }
         }
 
@@ -76,11 +66,6 @@ namespace RFID_UID_CHANGER
         {
             btnCircutShema.BackColor = Color.Turquoise;
             btnUIDChange.BackColor = Color.Turquoise;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void btnMinimize_Click(object sender, EventArgs e) { this.WindowState = FormWindowState.Minimized; }
@@ -124,21 +109,39 @@ namespace RFID_UID_CHANGER
         private void btnCircutShema_Click(object sender, EventArgs e)
         {
             buttonCheck();
-            checkForms();
             openForm("schema");
             btnCircutShema.BackColor = Color.Green;
+            btnCircutShema.Enabled= false;
+            btnUIDChange.Enabled= true;
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e) { uidChange.language = false; label1.Text = "RFID UID DEĞİŞTİRİCİ"; btnUIDChange.Text = "Kart işlemleri"; btnCircutShema.Text = "Devre şeması"; }
+        private void pictureBox1_Click(object sender, EventArgs e) 
+        { 
+            uidChange.language = false;
+            pictureBox1.Enabled = false; 
+            pictureBox2.Enabled = true; 
+            label1.Text = "RFID UID DEĞİŞTİRİCİ"; 
+            btnUIDChange.Text = "Kart işlemleri"; 
+            btnCircutShema.Text = "Devre şeması"; 
+        }
 
-        private void pictureBox2_Click(object sender, EventArgs e) { uidChange.language = true; label1.Text = "RFID UID CHANGER"; btnUIDChange.Text = "Card porcesses"; btnCircutShema.Text = "Circut schema"; }
+        private void pictureBox2_Click(object sender, EventArgs e) 
+        {
+            uidChange.language = true; 
+            pictureBox2.Enabled = false; 
+            pictureBox1.Enabled = true; 
+            label1.Text = "RFID UID CHANGER"; 
+            btnUIDChange.Text = "Card porcesses"; 
+            btnCircutShema.Text = "Circut schema"; 
+        }
 
         private void btnUIDChange_Click(object sender, EventArgs e)
         {
             buttonCheck();
-            checkForms();
             openForm("uidchange");
             btnUIDChange.BackColor = Color.Green;
+            btnUIDChange.Enabled = false;
+            btnCircutShema.Enabled = true;
         }
     }
 }
