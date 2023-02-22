@@ -304,7 +304,7 @@ namespace RFID_UID_CHANGER.Forms
         {
             if (comboBox1.Text != "" && serialPort1.IsOpen == true)
             {
-                if (radioButton1.Checked == true && WTxtBlock1.Text != "" && Wblock1.Text != "") 
+                if (radioButton1.Checked == true && Wblock1.Text != "") 
                 {
                     serialPort1.Write("2"); 
                     System.Threading.Thread.Sleep(2000);
@@ -313,7 +313,7 @@ namespace RFID_UID_CHANGER.Forms
                     serialPort1.Write(WTxtBlock1.Text);
                     System.Threading.Thread.Sleep(3000);
                 }
-                else if (radioButton2.Checked == true && WTxtBlock2.Text != "" && Wblock2.Text != "")
+                else if (radioButton2.Checked == true && Wblock2.Text != "")
                 {
                     serialPort1.Write("2");
                     System.Threading.Thread.Sleep(2000);
@@ -322,7 +322,7 @@ namespace RFID_UID_CHANGER.Forms
                     serialPort1.Write(WTxtBlock2.Text);
                     System.Threading.Thread.Sleep(3000);
                 }
-                else if (radioButton3.Checked == true && WTxtBlock3.Text != "" && Wblock3.Text != "")
+                else if (radioButton3.Checked == true && Wblock3.Text != "")
                 { 
                     serialPort1.Write("2");
                     System.Threading.Thread.Sleep(2000);
@@ -331,7 +331,7 @@ namespace RFID_UID_CHANGER.Forms
                     serialPort1.Write(WTxtBlock3.Text);
                     System.Threading.Thread.Sleep(3000);
                 }
-                else if (radioButton4.Checked == true && WTxtBlock4.Text != "" && Wblock3.Text != "") 
+                else if (radioButton4.Checked == true && Wblock3.Text != "") 
                 {
                     if (language == false) { MessageBox.Show("Doğrulama biti. Buraya veri yazamazsınız !", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
 
@@ -347,9 +347,9 @@ namespace RFID_UID_CHANGER.Forms
             }
             else 
             { 
-                if (language == false) { MessageBox.Show("Önce bir sektör seçip içini doldurmanız gerekir ! ", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+                if (language == false) { MessageBox.Show("Önce bir sektör ve blok seçmen gerekiyor ! ", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
 
-                else { MessageBox.Show("First you need to select a sector and fill it in ! ", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); } 
+                else { MessageBox.Show("First you need to select a sector and block ! ", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); } 
             }
                      
         }
