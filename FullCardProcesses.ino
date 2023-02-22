@@ -57,7 +57,7 @@ void WriteDataToBlockString(int blockNum, String data) // Karta veri yazma fonks
 
   status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, blockNum, &key, &(mfrc522.uid)); // A Anahtarını kullanarak okuma erişimi için istenen veri bloğunun kimliğinin doğrulanması
  
-  status = mfrc522.MIFARE_Write(blockNum, blockData, 16);  // İstenilen bloka istenilen veriyi yazar
+  status = mfrc522.MIFARE_Write(blockNum, blockData, 16);  // İstenilen bloğa istenilen veriyi yazar
   
   status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_RESTORE, blockNum, &key, &(mfrc522.uid)); // A anahtarı kullanılarak yapılan kimlik doğrulamasını sıfırlar
 
