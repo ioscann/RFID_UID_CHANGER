@@ -43,9 +43,9 @@ namespace RFID_UID_CHANGER.Forms
             }
             catch
             {
-                if (language == false) { MessageBox.Show("Seri portlar çakışıyor ! Lütfen kartın meşgul olmadığından emin olun !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); }
+                if (language == false) { MessageBox.Show("Seri portlar çakışıyor ! Lütfen cihazın meşgul olmadığından emin olun !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); }
 
-                else { MessageBox.Show("Serial ports conflicting ! Please make sure your card is not busy !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); }
+                else { MessageBox.Show("Serial ports conflicting ! Please make sure your device is not busy !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); }
             }
         }
 
@@ -166,9 +166,9 @@ namespace RFID_UID_CHANGER.Forms
                 } 
                 catch
                 {
-                    if (language == false) { MessageBox.Show("İletişim koptu ! Lütfen cihazın bilgisayara bağlı olduğundan emin olun.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); }
+                    if (language == false) { MessageBox.Show("Kod yüklenemiyor. Lütfen cihazın bilgisayara bağlı olduğundan ve 'RFID_UID_CHANGER\\bin\\Debug\\rfidchanger' adlı dosyanın silinmediğinden emin olun.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); }
 
-                    else { MessageBox.Show("Communication lost! Please make sure the device is connected to the computer.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); } 
+                    else { MessageBox.Show("Unable to load code. Please make sure the device is connected to the computer and the file named 'RFID_UID_CHANGER\\bin\\Debug\\rfidchanger' has not been deleted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); } 
                 }                           
             }
         }
@@ -260,7 +260,7 @@ namespace RFID_UID_CHANGER.Forms
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox1.Text == "0") { Wblock1.Text = ""; Wblock2.Text = ""; Wblock3.Text = "2"; Wblock4.Text = "3"; }
+            if (comboBox1.Text == "0") { Wblock1.Text = ""; Wblock2.Text = "1"; Wblock3.Text = "2"; Wblock4.Text = "3"; }
             else if (comboBox1.Text == "1") { Wblock1.Text = "4"; Wblock2.Text = "5"; Wblock3.Text = "6"; Wblock4.Text = "7"; }
             else if (comboBox1.Text == "2") { Wblock1.Text = "8"; Wblock2.Text = "9"; Wblock3.Text = "10"; Wblock4.Text = "11"; }
             else if (comboBox1.Text == "3") { Wblock1.Text = "12"; Wblock2.Text = "13"; Wblock3.Text = "14"; Wblock4.Text = "15"; }
@@ -282,8 +282,8 @@ namespace RFID_UID_CHANGER.Forms
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox2.Text == "0") { Rblock1.Text = "0"; Rblock2.Text = "1"; Rblock3.Text = "2"; Rblock4.Text = "3"; }
-            else if (comboBox2.Text == "1") { Rblock1.Text = "2"; Rblock2.Text = "2"; Rblock3.Text = "6"; Rblock4.Text = "7"; }
-            else if (comboBox2.Text == "2") { Rblock1.Text = ""; Rblock2.Text = ""; Rblock3.Text = "10"; Rblock4.Text = "11"; }
+            else if (comboBox2.Text == "1") { Rblock1.Text = "4"; Rblock2.Text = "5"; Rblock3.Text = "6"; Rblock4.Text = "7"; }
+            else if (comboBox2.Text == "2") { Rblock1.Text = "8"; Rblock2.Text = "9"; Rblock3.Text = "10"; Rblock4.Text = "11"; }
             else if (comboBox2.Text == "3") { Rblock1.Text = "12"; Rblock2.Text = "13"; Rblock3.Text = "14"; Rblock4.Text = "15"; }
             else if (comboBox2.Text == "4") { Rblock1.Text = "16"; Rblock2.Text = "17"; Rblock3.Text = "18"; Rblock4.Text = "19"; }
             else if (comboBox2.Text == "5") { Rblock1.Text = "20"; Rblock2.Text = "21"; Rblock3.Text = "22"; Rblock4.Text = "23"; }
@@ -339,9 +339,9 @@ namespace RFID_UID_CHANGER.Forms
                 }
                 else 
                 {
-                    if (language == false) { MessageBox.Show("Önce bir blok seçmeniz gerekiyor ! (NOT : 0,1,2 SEKTÖRLERİNDE İLK İKİ BLOĞA VERİ YAZILAMAZ)", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+                    if (language == false) { MessageBox.Show("Önce bir blok seçmeniz gerekiyor ! (NOT : 0. SEKTÖRDE İLK BLOĞA VERİ YAZILAMAZ)", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
                     
-                    else { MessageBox.Show("A block needs to be made first! (NOTE: DATA CANNOT BE WRITTEN IN THE FIRST TWO BLOCKS IN SECTORS 0,1,2)", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+                    else { MessageBox.Show("A block needs to be made first! (NOTE: YOU CANNOT WRITE DATA IN THE FIRST BLOCK IN THE FIRST SECTOR)", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
                 }
                 
             }
