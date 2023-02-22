@@ -26,10 +26,33 @@ namespace RFID_UID_CHANGER.Forms
 
         private string cardUID;
         public static bool language = false;
+        private bool uploadStatus = false;
+
+        void startConnection()
+        {
+            try
+            {
+                serialPort1.PortName = cmbSerialPorts.Text;
+                serialPort1.BaudRate = 9600;
+                serialPort1.Open();
+                btnConnect.Enabled = false;
+                btnDisconnect.Enabled = true;
+                cmbSerialPorts.Enabled = false;
+                if (language == true) { lblConnectStatus.Text = "Connected"; } else { lblConnectStatus.Text = "BAĞLI"; }
+                lblConnectStatus.ForeColor = Color.Lime;
+            }
+            catch
+            {
+                if (language == false) { MessageBox.Show("Seri portlar çakışıyor ! Lütfen kartın meşgul olmadığından emin olun !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); }
+
+                else { MessageBox.Show("Serial ports conflicting ! Please make sure your card is not busy !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); }
+            }
+        }
 
         void endConnection() 
         {
             serialPort1.Close();
+            uploadStatus = false;
             btnDisconnect.Enabled = false;
             btnConnect.Enabled = true;
             if (language == true) { lblConnectStatus.Text = "Not Connected"; } else { lblConnectStatus.Text = "BAĞLI DEĞİL"; }
@@ -37,6 +60,7 @@ namespace RFID_UID_CHANGER.Forms
             groupBox2.Enabled = false;
             groupBox3.Enabled= false;
             cmbSerialPorts.Enabled = true;
+            clearAllOfThem();
         }
 
         void clearReadTextbox()
@@ -49,6 +73,19 @@ namespace RFID_UID_CHANGER.Forms
         {
             WTxtBlock1.Text = ""; WTxtBlock2.Text = "";
             WTxtBlock3.Text = ""; WTxtBlock4.Text = "";
+        }
+
+        void clearAllOfThem()
+        {
+            clearReadTextbox();
+            clearWriteTexbox();
+            //
+            maskedTextBox1.Text = "";
+            maskedTextBox2.Text = "";
+            maskedTextBox3.Text = "";
+            maskedTextBox4.Text = "";
+            txtUID.Text = "";
+            listBox1.BackColor = Color.White;
         }
 
         void makeEnglish()
@@ -102,43 +139,9 @@ namespace RFID_UID_CHANGER.Forms
             if (language == true) { makeEnglish(); }
         }
 
-        private void btnDisconnect_Click(object sender, EventArgs e)
-        {
-            if (serialPort1.IsOpen == true)
-            {
-                serialPort1.Close();
-                cmbSerialPorts.Enabled = true;
-                btnConnect.Enabled = true;
-                btnDisconnect.Enabled = false;
-                if (language == true) { lblConnectStatus.Text = "Not Connected"; } else { lblConnectStatus.Text = "BAĞLI DEĞİL"; }
-                lblConnectStatus.ForeColor = Color.Red;
-                groupBox2.Enabled = false;
-                groupBox3.Enabled = false;
-            }
-        }
+        private void btnDisconnect_Click(object sender, EventArgs e) { if (serialPort1.IsOpen == true) { endConnection(); } }
 
-        private void btnConnect_Click(object sender, EventArgs e)
-        {
-            if (cmbSerialPorts.Text != "" && serialPort1.IsOpen == false)
-            {
-                try
-                {
-                    serialPort1.PortName = cmbSerialPorts.Text;
-                    serialPort1.BaudRate = 9600;
-                    serialPort1.Open();
-                    btnConnect.Enabled = false;
-                    btnDisconnect.Enabled = true;
-                    cmbSerialPorts.Enabled = false;
-                    if (language == true) { lblConnectStatus.Text = "Connected"; } else { lblConnectStatus.Text = "BAĞLI"; }
-                    lblConnectStatus.ForeColor = Color.Lime;
-                }
-                catch 
-                {
-                    if (language == false) { MessageBox.Show("Seri portlar çakışıyor ! Cihazı başka bir programın kullanmadığından emin olun !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); }
-                    else { MessageBox.Show("Serial ports conflicting ! Make sure no other program is using the device !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); }
-                }
-            }
-        }
+        private void btnConnect_Click(object sender, EventArgs e) { if (cmbSerialPorts.Text != "" && serialPort1.IsOpen == false) { startConnection(); } }
 
         private void btnCodeUploader_Click(object sender, EventArgs e)
         {
@@ -151,18 +154,20 @@ namespace RFID_UID_CHANGER.Forms
                     PortName = cmbSerialPorts.Text,
                     ArduinoModel = ArduinoModel.UnoR3
                 });
-                serialPort1.Close();
+                
                 try 
-                { 
+                {
+                    serialPort1.Close();
                     uploader.UploadSketch();
                     serialPort1.Open();
                     groupBox2.Enabled = true;
                     groupBox3.Enabled = true;
-                    btnCodeUploader.Enabled = false;
+                    uploadStatus = true;
                 } 
                 catch
                 {
                     if (language == false) { MessageBox.Show("İletişim koptu ! Lütfen cihazın bilgisayara bağlı olduğundan emin olun.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); }
+
                     else { MessageBox.Show("Communication lost! Please make sure the device is connected to the computer.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); endConnection(); } 
                 }                           
             }
@@ -192,13 +197,20 @@ namespace RFID_UID_CHANGER.Forms
         {
             string[] ports = SerialPort.GetPortNames();
             cmbSerialPorts.DataSource = ports;
-            if (serialPort1.IsOpen == true) { btnCodeUploader.Enabled = true; } else { btnCodeUploader.Enabled = false; }
+            //
+            if (serialPort1.IsOpen == true && uploadStatus == true) { btnCodeUploader.Enabled = false; }
+            else if (serialPort1.IsOpen == true) { btnCodeUploader.Enabled = true; } 
+            else if (serialPort1.IsOpen == false) { btnCodeUploader.Enabled = false; }
+            //
             if (language == true) { makeEnglish(); } else { makeTurkish(); }
+            //
             if (language == true && serialPort1.IsOpen == true) { lblConnectStatus.Text = "Connected"; }
             else if (language == true && serialPort1.IsOpen == false) { lblConnectStatus.Text = "Not Connected"; }
             else if (language == false && serialPort1.IsOpen == true) { lblConnectStatus.Text = "BAĞLI"; }
             else if (language == false && serialPort1.IsOpen == false) { lblConnectStatus.Text = "BAĞLI DEĞİL"; }
+            //
             if (cmbSerialPorts.Text == "") { endConnection(); }
+            //
             if (language == true && radioButton4.Checked == true) { WTxtBlock4.Text = "Access Bit!"; } 
             else if (language == false && radioButton4.Checked == true) { WTxtBlock4.Text = "Doğrulama Bit'i !"; }
         }
@@ -227,19 +239,24 @@ namespace RFID_UID_CHANGER.Forms
 
                     System.Threading.Thread.Sleep(2000);
                 }
-                else { if (language == false) { MessageBox.Show("Bir bölüme yazılabilecek en büyük tam sayı 255 dir !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
-                       else { MessageBox.Show("The largest integer that can be written to a partition is 255 !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning); } }
+                else 
+                { 
+                    if (language == false) { MessageBox.Show("Bir bölüme yazılabilecek en büyük tam sayı 255 dir !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+
+                    else { MessageBox.Show("The largest integer that can be written to a partition is 255 !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning); } 
+                }
                 
             }
-            else { if (language == false) { MessageBox.Show("Bu alan boş bırakılamaz !", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+            else 
+            { 
+                if (language == false) { MessageBox.Show("Bu alan boş bırakılamaz !", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+
                 else { MessageBox.Show("This field cannot be left blank !", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
             }
             
         }
 
         private void btnReadUID_Click(object sender, EventArgs e) { timer1.Start(); }
-
-        private void btnCopy_Click(object sender, EventArgs e) { if (txtUID.Text != "") { } }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -345,28 +362,28 @@ namespace RFID_UID_CHANGER.Forms
                 { 
                     serialPort1.Write("3");
                     serialPort1.Write(Rblock1.Text);
-                    System.Threading.Thread.Sleep(500);
+                    //System.Threading.Thread.Sleep(500);
                     RTxtBlock1.Text = serialPort1.ReadExisting();
                 }
                 else if (radioButton6.Checked == true)
                 { 
                     serialPort1.Write("3");
                     serialPort1.Write(Rblock2.Text);
-                    System.Threading.Thread.Sleep(500);
+                    //System.Threading.Thread.Sleep(500);
                     RTxtBlock2.Text = serialPort1.ReadExisting();
                 }
                 else if (radioButton7.Checked == true)
                 { 
                     serialPort1.Write("3");
                     serialPort1.Write(Rblock3.Text);
-                    System.Threading.Thread.Sleep(500);
+                    //System.Threading.Thread.Sleep(500);
                     RTxtBlock3.Text = serialPort1.ReadExisting();
                 }
                 else if (radioButton8.Checked == true) 
                 { 
                     serialPort1.Write("3");
                     serialPort1.Write(Rblock4.Text);
-                    System.Threading.Thread.Sleep(500);
+                    //System.Threading.Thread.Sleep(500);
                     RTxtBlock4.Text = serialPort1.ReadExisting();
                 }
                 else 
@@ -375,8 +392,7 @@ namespace RFID_UID_CHANGER.Forms
 
                     else { MessageBox.Show("First you need the select the block you want!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
                 }
-                
-                
+                               
             }
             else 
             { 
@@ -384,7 +400,7 @@ namespace RFID_UID_CHANGER.Forms
 
                 else { MessageBox.Show("You must select sector and block before reading !", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); } 
             }
-                        
+            
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e) { if (radioButton1.Checked == true) { WTxtBlock1.Enabled = true; } else { WTxtBlock1.Enabled = false; } }
