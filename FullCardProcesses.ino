@@ -34,7 +34,7 @@ void readUID()
 }
 
 
-void setNewUID(int A , int B , int C , int D)
+void setNewUID(int A , int B , int C , int D) 
 { 
   byte newUid[] = {A,B,C,D}; // Alınan 4 veriyi byte dizisine depolar
 

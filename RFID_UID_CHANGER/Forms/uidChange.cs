@@ -88,7 +88,7 @@ namespace RFID_UID_CHANGER.Forms
             listBox1.BackColor = Color.White;
         }
 
-        void makeEnglish()
+        void translateToEnglish()
         {
             groupBox1.Text = "Connection and code uploading";
             label1.Text = "Serial port";
@@ -110,7 +110,7 @@ namespace RFID_UID_CHANGER.Forms
             btnReadSector.Text = "Read";
         }
 
-        void makeTurkish()
+        void translateToTurkish()
         {
             groupBox1.Text = "Bağlantı ve kod yükleme";
             label1.Text = "Seri port";
@@ -136,7 +136,7 @@ namespace RFID_UID_CHANGER.Forms
         {
             timer2.Start();
             btnDisconnect.Enabled = false;
-            if (language == true) { makeEnglish(); }
+            if (language == true) { translateToEnglish(); }
         }
 
         private void btnDisconnect_Click(object sender, EventArgs e) { if (serialPort1.IsOpen == true) { endConnection(); } }
@@ -202,7 +202,7 @@ namespace RFID_UID_CHANGER.Forms
             else if (serialPort1.IsOpen == true) { btnCodeUploader.Enabled = true; } 
             else if (serialPort1.IsOpen == false) { btnCodeUploader.Enabled = false; }
             //
-            if (language == true) { makeEnglish(); } else { makeTurkish(); }
+            if (language == true) { translateToEnglish(); } else { translateToTurkish(); }
             //
             if (language == true && serialPort1.IsOpen == true) { lblConnectStatus.Text = "Connected"; }
             else if (language == true && serialPort1.IsOpen == false) { lblConnectStatus.Text = "Not Connected"; }
