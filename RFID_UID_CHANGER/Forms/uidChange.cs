@@ -362,28 +362,24 @@ namespace RFID_UID_CHANGER.Forms
                 { 
                     serialPort1.Write("3");
                     serialPort1.Write(Rblock1.Text);
-                    //System.Threading.Thread.Sleep(500);
                     RTxtBlock1.Text = serialPort1.ReadExisting();
                 }
                 else if (radioButton6.Checked == true)
                 { 
                     serialPort1.Write("3");
                     serialPort1.Write(Rblock2.Text);
-                    //System.Threading.Thread.Sleep(500);
                     RTxtBlock2.Text = serialPort1.ReadExisting();
                 }
                 else if (radioButton7.Checked == true)
                 { 
                     serialPort1.Write("3");
                     serialPort1.Write(Rblock3.Text);
-                    //System.Threading.Thread.Sleep(500);
                     RTxtBlock3.Text = serialPort1.ReadExisting();
                 }
                 else if (radioButton8.Checked == true) 
                 { 
                     serialPort1.Write("3");
                     serialPort1.Write(Rblock4.Text);
-                    //System.Threading.Thread.Sleep(500);
                     RTxtBlock4.Text = serialPort1.ReadExisting();
                 }
                 else 
