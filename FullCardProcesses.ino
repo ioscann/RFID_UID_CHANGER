@@ -21,7 +21,7 @@ void setup()
   SPI.begin(); // SPI protokolünü başlatır   
   mfrc522.PCD_Init(); //MFRC522 kartını başlatır
   
-  for (byte i = 0; i < 6; i++) { key.keyByte[i] = 0xFF; } // Anahtarı hazırlar -> çip fabrikadan teslim edildiğinde tüm anahtarlar FFFFFFFFFFFFFF olarak ayarlanır. 
+  for (byte i = 0; i < 6; i++) { key.keyByte[i] = 0xFF; } // Anahtarı hazırlar -> çip fabrikadan teslim edildiğinde tüm anahtarlar FFFFFFFFFFFFFF olarak ayarlanır.  
 }
 
 void readUID()
